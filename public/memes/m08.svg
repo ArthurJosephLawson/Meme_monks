@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#0c110e"/>
+  <rect x="12" y="12" width="776" height="576" fill="none" stroke="#00FF66" stroke-width="3" opacity="0.45"/>
+  <text x="400" y="120" text-anchor="middle" font-family="monospace" font-size="40" font-weight="bold" fill="#00ff66">COFFEE.EXE</text>
+  <text x="400" y="175" text-anchor="middle" font-family="monospace" font-size="34" font-weight="bold" fill="#eafff2">HAS STOPPED RESPONDING</text>
+
+  <!-- mug -->
+  <rect x="310" y="260" width="160" height="180" fill="#060907" stroke="#00ff66" stroke-width="4"/>
+  <path d="M 470 300 Q 520 310 470 360" fill="none" stroke="#00ff66" stroke-width="4"/>
+  <!-- steam -->
+  <path d="M 350 240 Q 360 210 350 190" fill="none" stroke="#8fa39a" stroke-width="3" opacity="0.7"/>
+  <path d="M 390 240 Q 400 210 390 190" fill="none" stroke="#8fa39a" stroke-width="3" opacity="0.7"/>
+
+  <text x="400" y="510" text-anchor="middle" font-family="monospace" font-size="22" fill="#8fa39a">[wait] [wait] [wait]</text>
+  <text x="400" y="545" text-anchor="middle" font-family="monospace" font-size="22" fill="#ff5566">the monk is empty</text>
+</svg>

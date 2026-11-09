@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="10" fill="#060907"/>
+  <rect x="5" y="5" width="54" height="54" rx="6" fill="none" stroke="#00FF66" stroke-width="3"/>
+  <circle cx="18" cy="20" r="2.5" fill="#00FF66"/>
+  <circle cx="28" cy="20" r="2.5" fill="#00FF66"/>
+  <text x="32" y="46" font-family="monospace" font-size="20" font-weight="bold" fill="#00FF66" text-anchor="middle">MM</text>
+</svg>

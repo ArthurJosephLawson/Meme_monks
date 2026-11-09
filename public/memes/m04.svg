@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#0c110e"/>
+  <rect x="12" y="12" width="776" height="576" fill="none" stroke="#00FF66" stroke-width="3" opacity="0.45"/>
+  <text x="400" y="120" text-anchor="middle" font-family="monospace" font-size="38" font-weight="bold" fill="#00ff66">GIT PUSH --FORCE</text>
+  <text x="400" y="175" text-anchor="middle" font-family="monospace" font-size="38" font-weight="bold" fill="#eafff2">AND ASSUME NOTHING</text>
+
+  <!-- warning triangle -->
+  <path d="M 400 250 L 480 400 L 320 400 Z" fill="none" stroke="#ffcc55" stroke-width="4"/>
+  <text x="400" y="390" text-anchor="middle" font-family="monospace" font-size="40" font-weight="bold" fill="#ffcc55">!</text>
+
+  <text x="400" y="470" text-anchor="middle" font-family="monospace" font-size="22" fill="#8fa39a">history: erased</text>
+  <text x="400" y="505" text-anchor="middle" font-family="monospace" font-size="22" fill="#8fa39a">coworkers: unknown</text>
+  <text x="400" y="540" text-anchor="middle" font-family="monospace" font-size="22" fill="#8fa39a">main branch: mine now</text>
+</svg>

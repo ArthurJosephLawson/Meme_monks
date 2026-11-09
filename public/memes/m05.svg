@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 700">
+  <rect width="800" height="700" fill="#0c110e"/>
+  <rect x="12" y="12" width="776" height="676" fill="none" stroke="#00FF66" stroke-width="3" opacity="0.45"/>
+  <text x="400" y="110" text-anchor="middle" font-family="monospace" font-size="38" font-weight="bold" fill="#00ff66">NOT A BUG.</text>
+  <text x="400" y="165" text-anchor="middle" font-family="monospace" font-size="38" font-weight="bold" fill="#eafff2">A SPONTANEOUS FEATURE</text>
+
+  <!-- chart with chaotic line -->
+  <rect x="140" y="230" width="520" height="320" fill="#060907" stroke="#1d2a22" stroke-width="2"/>
+  <line x1="180" y1="500" x2="620" y2="500" stroke="#1d2a22" stroke-width="2"/>
+  <line x1="180" y1="500" x2="180" y2="270" stroke="#1d2a22" stroke-width="2"/>
+  <polyline points="180,490 240,470 280,480 330,420 370,440 420,350 460,390 510,300 560,330 620,280"
+    fill="none" stroke="#00ff66" stroke-width="3"/>
+  <circle cx="620" cy="280" r="8" fill="#00ff66"/>
+  <text x="560" y="255" font-family="monospace" font-size="18" fill="#00ff66">SHIPPING</text>
+
+  <text x="400" y="615" text-anchor="middle" font-family="monospace" font-size="22" fill="#8fa39a">me in standup, serene</text>
+</svg>
