@@ -1,12 +1,8 @@
-"use client";
-
-import type { FeedTabId } from "@/lib/types";
-
-export type FeedTab = FeedTabId;
+export type FeedTab = "foryou" | "new";
 
 const TABS: { id: FeedTab; label: string }[] = [
   { id: "foryou", label: "For You" },
-  { id: "new", label: "Newest Memes" },
+  { id: "new", label: "Newest" },
 ];
 
 export function FeedTabs({
@@ -20,7 +16,7 @@ export function FeedTabs({
     <div
       role="tablist"
       aria-label="Feed selection"
-      className="flex w-full border border-edge bg-panel p-1"
+      className="inline-flex rounded-md border border-line bg-inset p-0.5"
     >
       {TABS.map(({ id, label }) => {
         const active = tab === id;
@@ -30,10 +26,10 @@ export function FeedTabs({
             role="tab"
             aria-selected={active}
             onClick={() => onChange(id)}
-            className={`flex-1 border px-4 py-2.5 font-mono text-sm tracking-wide transition-colors ${
+            className={`rounded-[5px] px-4 py-1.5 text-sm transition-colors ${
               active
-                ? "border-neon bg-neon font-bold text-ink box-glow"
-                : "border-transparent text-dim hover:border-edge hover:text-zinc-200"
+                ? "border border-line bg-surface font-medium text-ink"
+                : "border border-transparent text-muted hover:text-ink"
             }`}
           >
             {label}

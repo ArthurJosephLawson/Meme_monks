@@ -38,27 +38,21 @@ export function MemeCard({ meme }: { meme: Meme }) {
   const laughCount = meme.laugh + (votes.laugh ? 1 : 0);
 
   return (
-    <article className="overflow-hidden border border-edge bg-panel transition-colors hover:border-neon/40">
-      {/* Card header */}
-      <div className="flex items-center gap-3 px-4 py-3">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-neon/50 bg-neon/10 font-mono text-xs font-bold text-neon">
+    <article className="overflow-hidden rounded-md border border-line bg-surface">
+      <div className="flex items-center gap-2.5 px-3 pb-2 pt-3">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-inset-strong text-xs font-semibold text-ink">
           {(creator?.monkName ?? meme.creator).charAt(0).toUpperCase()}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-mono text-sm text-zinc-100">
-            @{meme.creator}
+          <p className="truncate text-sm font-medium text-ink">
+            {creator?.monkName ?? meme.creator}
           </p>
-          <p className="truncate font-mono text-[10px] tracking-[0.18em] text-dim">
-            {creator?.monkName?.toUpperCase() ?? "ANON MONK"}
-          </p>
+          <p className="truncate text-xs text-faint">@{meme.creator}</p>
         </div>
-        <span className="shrink-0 font-mono text-[10px] tracking-widest text-dim/70">
-          {timeAgo(meme.createdAt)}
-        </span>
+        <span className="shrink-0 text-xs text-faint">{timeAgo(meme.createdAt)}</span>
       </div>
 
-      {/* Image */}
-      <div className="scanlines border-y border-edge bg-ink">
+      <div className="border-y border-line bg-inset">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={meme.image}
@@ -68,60 +62,57 @@ export function MemeCard({ meme }: { meme: Meme }) {
         />
       </div>
 
-      {/* Body */}
-      <div className="space-y-3 px-4 py-3">
-        <h3 className="text-sm font-semibold text-zinc-100">{meme.title}</h3>
+      <div className="space-y-2 px-3 py-2.5">
+        <h3 className="text-sm text-ink">{meme.title}</h3>
 
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1">
           {meme.tags.map((tag) => (
             <TagPill key={tag} tag={tag} />
           ))}
         </div>
 
-        <div className="flex items-center gap-2 border-t border-edge pt-3">
+        <div className="flex items-center gap-1 border-t border-inset pt-2">
           <button
             onClick={() => react("based")}
             aria-pressed={votes.based}
-            className={`flex items-center gap-1.5 border px-2.5 py-1.5 font-mono text-xs transition-colors ${
+            className={`flex items-center gap-1.5 rounded px-2 py-1 text-xs transition-colors ${
               votes.based
-                ? "border-neon bg-neon/15 text-neon box-glow"
-                : "border-edge text-dim hover:border-neon/50 hover:text-neon"
+                ? "bg-inset-strong font-medium text-ink"
+                : "text-muted hover:bg-inset hover:text-ink"
             }`}
           >
-            <Zap className="h-3.5 w-3.5" strokeWidth={2.2} />
+            <Zap className="h-3.5 w-3.5" strokeWidth={2} />
             Based
-            <span className="tabular-nums opacity-80">{formatCount(basedCount)}</span>
+            <span className="tabular-nums text-faint">{formatCount(basedCount)}</span>
           </button>
 
           <button
             onClick={() => react("laugh")}
             aria-pressed={votes.laugh}
-            className={`flex items-center gap-1.5 border px-2.5 py-1.5 font-mono text-xs transition-colors ${
+            className={`flex items-center gap-1.5 rounded px-2 py-1 text-xs transition-colors ${
               votes.laugh
-                ? "border-neon bg-neon/15 text-neon box-glow"
-                : "border-edge text-dim hover:border-neon/50 hover:text-neon"
+                ? "bg-inset-strong font-medium text-ink"
+                : "text-muted hover:bg-inset hover:text-ink"
             }`}
           >
-            <Flame className="h-3.5 w-3.5" strokeWidth={2.2} />
+            <Flame className="h-3.5 w-3.5" strokeWidth={2} />
             Laugh
-            <span className="tabular-nums opacity-80">{formatCount(laughCount)}</span>
+            <span className="tabular-nums text-faint">{formatCount(laughCount)}</span>
           </button>
 
           <button
             onClick={share}
             aria-label="Share meme"
-            className={`ml-auto flex items-center gap-1.5 border px-2.5 py-1.5 font-mono text-xs transition-colors ${
-              copied
-                ? "border-neon text-neon"
-                : "border-edge text-dim hover:border-neon/50 hover:text-neon"
+            className={`ml-auto flex items-center gap-1.5 rounded px-2 py-1 text-xs transition-colors ${
+              copied ? "font-medium text-ink" : "text-muted hover:bg-inset hover:text-ink"
             }`}
           >
             {copied ? (
-              <Check className="h-3.5 w-3.5" strokeWidth={2.2} />
+              <Check className="h-3.5 w-3.5" strokeWidth={2} />
             ) : (
-              <Share2 className="h-3.5 w-3.5" strokeWidth={2.2} />
+              <Share2 className="h-3.5 w-3.5" strokeWidth={2} />
             )}
-            {copied ? "COPIED" : "Share"}
+            {copied ? "Copied" : "Share"}
           </button>
         </div>
       </div>

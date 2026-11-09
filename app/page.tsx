@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { MEMES } from "@/lib/data";
 import { MemeCard } from "@/components/MemeCard";
 import { FeedTabs, type FeedTab } from "@/components/FeedTabs";
+import { EmptyState } from "@/components/EmptyState";
 
 export default function FeedPage() {
   const [tab, setTab] = useState<FeedTab>("foryou");
@@ -21,30 +22,31 @@ export default function FeedPage() {
   }, [tab]);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 md:px-8">
-      <header className="mb-6">
-        <p className="font-mono text-[11px] tracking-[0.3em] text-neon text-glow">
-          FEED://HOME
-        </p>
-        <h1 className="mt-1 font-mono text-2xl font-bold tracking-wide text-zinc-100">
-          THE FEED
-        </h1>
-        <p className="mt-1 text-sm text-dim">
-          Curated signals from the order. Only monks in good standing transmit.
-        </p>
-      </header>
-
-      <FeedTabs tab={tab} onChange={setTab} />
-
-      <div className="mt-6 space-y-6">
-        {memes.map((meme) => (
-          <MemeCard key={meme.id} meme={meme} />
-        ))}
+    <div className="mx-auto max-w-2xl px-4 py-6 md:px-6">
+      <div className="mb-5 flex items-end justify-between gap-4">
+        <div>
+          <h1 className="text-lg font-semibold tracking-tight text-ink">Feed</h1>
+          <p className="mt-0.5 text-sm text-muted">
+            Curated memes from creators in good standing.
+          </p>
+        </div>
+        <FeedTabs tab={tab} onChange={setTab} />
       </div>
 
-      <footer className="mt-10 border-t border-edge py-6 text-center font-mono text-[10px] tracking-[0.3em] text-dim/60">
-        END OF TRANSMISSION // MEME MONKS
-      </footer>
+      {memes.length > 0 ? (
+        <div className="space-y-4">
+          {memes.map((meme) => (
+            <MemeCard key={meme.id} meme={meme} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState
+          title="No memes yet"
+          description="The first transmissions land here. Creator applications are open — apply and be first through the gate."
+          actionLabel="Apply to upload"
+          actionHref="/apply"
+        />
+      )}
     </div>
   );
 }

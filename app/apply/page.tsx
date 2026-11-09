@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Check, Loader2, Lock, ArrowLeft, Terminal } from "lucide-react";
+import { Check, Loader2, Lock, ArrowLeft } from "lucide-react";
 import { isValidUrl, sanitizeText } from "@/lib/sanitize";
 
 interface FormState {
@@ -12,6 +12,10 @@ interface FormState {
 }
 
 const EMPTY: FormState = { name: "", portfolio: "", sample: "" };
+
+const inputClass =
+  "h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-soft outline-none transition-colors focus:border-line-strong";
+const labelClass = "mb-1 block text-xs font-medium text-muted";
 
 export default function ApplyPage() {
   const [form, setForm] = useState<FormState>(EMPTY);
@@ -54,7 +58,7 @@ export default function ApplyPage() {
       });
       const data = (await res.json()) as { ok: boolean; id?: string; error?: string };
       if (!res.ok || !data.ok) {
-        setError(data.error ?? "Transmission failed. Try again.");
+        setError(data.error ?? "Submission failed. Try again.");
         return;
       }
       setRefId(data.id ?? "unknown");
@@ -67,56 +71,47 @@ export default function ApplyPage() {
 
   if (refId) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16 md:px-8">
-        <div className="border border-neon/60 bg-panel p-8 text-center box-glow">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center border border-neon bg-neon/15 text-neon">
-            <Check className="h-6 w-6" strokeWidth={2.5} />
+      <div className="mx-auto max-w-xl px-4 py-10 md:px-6">
+        <div className="rounded-md border border-line bg-surface px-4 py-8 text-center">
+          <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-inset-strong text-ink">
+            <Check className="h-5 w-5" strokeWidth={2} />
           </span>
-          <h1 className="mt-5 font-mono text-xl font-bold tracking-wide text-neon text-glow">
-            APPLICATION FILED
+          <h1 className="mt-4 text-lg font-semibold tracking-tight text-ink">
+            Application received
           </h1>
-          <p className="mt-3 text-sm text-dim">
-            The elders will review your transmission. Watch your inbox for judgment.
+          <p className="mx-auto mt-1 max-w-sm text-sm text-muted">
+            The curators will review your submission. You&apos;ll hear back by email.
           </p>
-          <p className="mt-4 inline-block border border-edge bg-ink px-4 py-2 font-mono text-xs text-neon">
-            REF: {refId}
+          <p className="mt-3 text-xs text-faint">
+            Reference: <span className="tabular-nums text-muted">{refId}</span>
           </p>
-          <div className="mt-8">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 border border-edge px-4 py-2 font-mono text-xs text-dim transition-colors hover:border-neon/50 hover:text-neon"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" /> BACK TO FEED
-            </Link>
-          </div>
+          <Link
+            href="/"
+            className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-colors hover:text-accent-hover"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" /> Back to feed
+          </Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-8 md:px-8">
-      <header className="mb-8">
-        <p className="font-mono text-[11px] tracking-[0.3em] text-neon text-glow">
-          RITES://ENTRY
-        </p>
-        <h1 className="mt-1 font-mono text-2xl font-bold tracking-wide text-zinc-100">
-          APPLY TO UPLOAD
+    <div className="mx-auto max-w-xl px-4 py-6 md:px-6">
+      <div className="mb-5">
+        <h1 className="text-lg font-semibold tracking-tight text-ink">
+          Apply to upload
         </h1>
-        <p className="mt-2 text-sm text-dim">
-          Posting rights are earned, not given. A one-time vetting fee of{" "}
-          <span className="font-mono text-neon">$5.00</span> keeps the feed free of
-          noise. Approved monks transmit directly to the feed.
+        <p className="mt-0.5 text-sm text-muted">
+          Posting rights are reviewed, not automatic. A one-time $5.00 vetting fee
+          keeps the feed clean.
         </p>
-      </header>
+      </div>
 
-      <form onSubmit={onSubmit} className="space-y-5" noValidate>
+      <form onSubmit={onSubmit} className="space-y-3.5" noValidate>
         <div>
-          <label
-            htmlFor="name"
-            className="block font-mono text-[11px] tracking-[0.25em] text-dim"
-          >
-            01 // CREATOR NAME
+          <label htmlFor="name" className={labelClass}>
+            Creator name
           </label>
           <input
             id="name"
@@ -126,16 +121,13 @@ export default function ApplyPage() {
             placeholder="e.g. Juniper Vale"
             maxLength={80}
             required
-            className="mt-2 w-full border border-edge bg-panel px-4 py-3 font-mono text-sm text-zinc-100 placeholder:text-dim/40 outline-none transition-colors focus:border-neon focus:box-glow"
+            className={inputClass}
           />
         </div>
 
         <div>
-          <label
-            htmlFor="portfolio"
-            className="block font-mono text-[11px] tracking-[0.25em] text-dim"
-          >
-            02 // PORTFOLIO / SOCIAL LINK
+          <label htmlFor="portfolio" className={labelClass}>
+            Portfolio or social link
           </label>
           <input
             id="portfolio"
@@ -145,16 +137,13 @@ export default function ApplyPage() {
             placeholder="https://yourwork.example"
             maxLength={500}
             required
-            className="mt-2 w-full border border-edge bg-panel px-4 py-3 font-mono text-sm text-zinc-100 placeholder:text-dim/40 outline-none transition-colors focus:border-neon focus:box-glow"
+            className={inputClass}
           />
         </div>
 
         <div>
-          <label
-            htmlFor="sample"
-            className="block font-mono text-[11px] tracking-[0.25em] text-dim"
-          >
-            03 // SAMPLE MEME URL
+          <label htmlFor="sample" className={labelClass}>
+            Sample meme URL
           </label>
           <input
             id="sample"
@@ -164,42 +153,44 @@ export default function ApplyPage() {
             placeholder="https://i.yourmemes.example/best.png"
             maxLength={500}
             required
-            className="mt-2 w-full border border-edge bg-panel px-4 py-3 font-mono text-sm text-zinc-100 placeholder:text-dim/40 outline-none transition-colors focus:border-neon focus:box-glow"
+            className={inputClass}
           />
         </div>
 
-        {/* Stripe placeholder */}
-        <div className="border border-dashed border-neon/40 bg-neon/5 p-4">
-          <p className="flex items-center gap-2 font-mono text-[11px] tracking-[0.25em] text-neon">
-            <Lock className="h-3.5 w-3.5" /> STRIPE CHECKOUT
+        {/* Payment section — flat container, Stripe placeholder */}
+        <div className="rounded-md border border-line bg-inset p-3">
+          <p className="flex items-center gap-1.5 text-sm font-medium text-ink">
+            <Lock className="h-3.5 w-3.5 text-muted" />
+            Payment — $5.00 vetting fee
           </p>
-          <p className="mt-2 font-mono text-[11px] leading-relaxed text-dim">
-            [INTEGRATION PLACEHOLDER] Card capture is disabled in this scaffold.
-            Wire your Stripe publishable key + Checkout Session into
-            <span className="text-zinc-300"> app/api/apply/route.ts</span> to
-            charge the $5.00 vetting fee before submission.
+          <p className="mt-1 text-xs leading-relaxed text-muted">
+            Card capture is handled by Stripe Checkout. It&apos;s a placeholder in
+            this build — wire your publishable key and Checkout Session into{" "}
+            <span className="text-ink">app/api/apply/route.ts</span> to charge the
+            fee before an application is filed.
           </p>
         </div>
 
         {error && (
-          <p role="alert" className="border border-red-500/50 bg-red-500/10 px-4 py-2.5 font-mono text-xs text-red-400">
-            ERR: {error}
+          <p
+            role="alert"
+            className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700"
+          >
+            {error}
           </p>
         )}
 
         <button
           type="submit"
           disabled={submitting}
-          className="flex w-full items-center justify-center gap-2 border border-neon bg-neon px-4 py-3.5 font-mono text-sm font-bold tracking-wide text-ink transition-shadow hover:box-glow disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-accent text-sm font-medium text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
         >
           {submitting ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" /> TRANSMITTING…
+              <Loader2 className="h-4 w-4 animate-spin" /> Submitting…
             </>
           ) : (
-            <>
-              <Terminal className="h-4 w-4" strokeWidth={2.4} /> SUBMIT APPLICATION — $5.00
-            </>
+            "Submit application"
           )}
         </button>
       </form>
