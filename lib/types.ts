@@ -33,11 +33,10 @@ export type SubmissionType = "UPLOAD" | "CONCEPT_DESCRIPTION";
 
 export interface ApplicationPayload {
   name: string;
-  portfolio: string;
+  /** Email address or Instagram username. */
+  contact: string;
   submissionType: SubmissionType;
   /** Required for CONCEPT_DESCRIPTION. */
   conceptText?: string;
-  /** Baseline filing fee, always server-assigned (20 NPR). */
-  basePriceNpr: number;
   agreedToPolicy: boolean;
 }

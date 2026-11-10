@@ -6,11 +6,10 @@ export const OPERATIONS_EMAIL = "script.monks.mail@gmail.com";
 export interface ApplicationEmailData {
   id: string;
   name: string;
-  portfolio: string;
+  contact: string;
   submissionType: string;
   assetPath?: string;
   conceptText?: string;
-  basePriceNpr: number;
   agreedToPolicy: boolean;
   status: string;
   createdAt: string;
@@ -45,10 +44,9 @@ export function buildApplicationEmail(data: ApplicationEmailData): ApplicationEm
     "",
     `Reference:        ${data.id}`,
     `Applicant name:   ${data.name}`,
-    `Portfolio:        ${data.portfolio || "—"}`,
+    `Contact:          ${data.contact || "—"}`,
     `Submission type: ${data.submissionType}`,
     `Meme detail:      ${detail}`,
-    `Baseline price:   ${data.basePriceNpr} NPR (cash to Operations Lead)`,
     `Policy agreed:    ${data.agreedToPolicy ? "yes" : "no"}`,
     `Status:           ${data.status}`,
     `Filed at:         ${data.createdAt}`,
@@ -64,10 +62,9 @@ export function buildApplicationEmail(data: ApplicationEmailData): ApplicationEm
       <table style="width:100%;border-collapse:collapse;font-size:13px;color:#1f2833;">
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Reference</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.id}</td></tr>
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Applicant name</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.name}</td></tr>
-        <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Portfolio</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.portfolio || "—"}</td></tr>
+        <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Contact</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.contact || "—"}</td></tr>
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Submission type</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.submissionType}</td></tr>
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Meme detail</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${detail}</td></tr>
-        <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Baseline price</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.basePriceNpr} NPR</td></tr>
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Policy agreed</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.agreedToPolicy ? "yes" : "no"}</td></tr>
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Status</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.status}</td></tr>
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Filed at</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.createdAt}</td></tr>

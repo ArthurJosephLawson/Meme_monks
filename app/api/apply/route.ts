@@ -8,7 +8,6 @@ import {
   sniffImageType,
   ALLOWED_IMAGE_TYPES,
   MAX_UPLOAD_BYTES,
-  BASE_PRICE_NPR,
   applicationFingerprint,
   type ValidatedApplication,
   type SubmissionType,
@@ -36,11 +35,10 @@ interface StoredApplication {
   id: string;
   createdAt: string;
   name: string;
-  portfolio: string;
+  contact: string;
   submissionType: SubmissionType;
   assetPath?: string;
   conceptText?: string;
-  basePriceNpr: number;
   agreedToPolicy: true;
   status: "pending";
 }
@@ -151,7 +149,7 @@ export async function POST(req: Request) {
       result = validateApplication(
         {
           name: form.get("name"),
-          portfolio: form.get("portfolio"),
+          contact: form.get("contact"),
           submissionType: form.get("submissionType"),
           conceptText: form.get("conceptText"),
           agreedToPolicy: form.get("agreedToPolicy") === "true",
@@ -234,11 +232,10 @@ export async function POST(req: Request) {
     id: randomUUID(),
     createdAt: new Date().toISOString(),
     name: validated.name,
-    portfolio: validated.portfolio,
+    contact: validated.contact,
     submissionType: validated.submissionType,
     ...(assetPath ? { assetPath } : {}),
     ...(validated.conceptText ? { conceptText: validated.conceptText } : {}),
-    basePriceNpr: validated.basePriceNpr,
     agreedToPolicy: true,
     status: "pending",
   };
@@ -271,11 +268,10 @@ export async function POST(req: Request) {
     await sendApplicationEmail({
       id: application.id,
       name: application.name,
-      portfolio: application.portfolio,
+      contact: application.contact,
       submissionType: application.submissionType,
       assetPath: application.assetPath,
       conceptText: application.conceptText,
-      basePriceNpr: application.basePriceNpr,
       agreedToPolicy: true,
       status: application.status,
       createdAt: application.createdAt,
@@ -290,7 +286,6 @@ export async function POST(req: Request) {
   return json(201, {
     ok: true,
     id: application.id,
-    basePriceNpr: BASE_PRICE_NPR,
   });
 }
 

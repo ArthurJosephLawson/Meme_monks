@@ -5,19 +5,16 @@ import Link from "next/link";
 import {
   AlertTriangle,
   ArrowLeft,
-  Banknote,
   Check,
   FileText,
   FileUp,
   Lightbulb,
   Loader2,
-  Lock,
   ScrollText,
-  ShieldCheck,
   X,
 } from "lucide-react";
-import { isValidUrl, sanitizeText } from "@/lib/sanitize";
-import { BASE_PRICE_NPR, MAX_CONCEPT_LEN, MAX_UPLOAD_BYTES } from "@/lib/application";
+import { sanitizeText } from "@/lib/sanitize";
+import { MAX_CONCEPT_LEN, MAX_UPLOAD_BYTES, isValidContact } from "@/lib/application";
 
 type SubmissionType = "UPLOAD" | "CONCEPT_DESCRIPTION";
 
@@ -68,7 +65,7 @@ function PolicyModal({ onClose }: { onClose: () => void }) {
             className="flex items-center gap-2 text-sm font-semibold tracking-tight text-ink"
           >
             <ScrollText className="h-4 w-4 text-muted" />
-            Content Policy &amp; Pricing Terms
+            Terms and Conditions
           </h2>
           <button
             ref={closeRef}
@@ -81,39 +78,68 @@ function PolicyModal({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        <div className="mt-3 space-y-3 text-xs leading-relaxed text-muted">
-          <p className="flex gap-2">
-            <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
-            <span>
-              <strong className="text-ink">Zero tolerance.</strong> Vulgarity,
-              hate speech, harassment, or content targeting protected groups is
-              rejected outright and may permanently bar you from the collective.
-            </span>
+        <div className="mt-3 max-h-[50vh] overflow-y-auto pr-1 text-xs leading-relaxed text-muted">
+          <h3 className="mb-2 text-sm font-semibold text-ink">Terms and Conditions</h3>
+          <p className="mb-2">
+            By accessing, browsing, or using Meme Monks (&quot;the Platform&quot;),
+            you agree to be bound by the following legally binding Terms and
+            Conditions:
           </p>
-          <p className="flex gap-2">
-            <FileText className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
-            <span>
-              <strong className="text-ink">Review process.</strong> Every
-              application is read by a human curator. Filing does not
-              guarantee publishing; you&apos;ll hear back after review.
-            </span>
+          <p className="mb-1 font-medium text-ink">User Content, Adaptations &amp; IP Clearance (DMCA &amp; Liability Shield):</p>
+          <p className="mb-2">
+            Open-Source &amp; Derived Memes: Users are permitted to use open-source,
+            public-domain, or widespread internet meme formats/templates (e.g.,
+            from Pinterest or Google Images). However, any custom edits, captions,
+            or arrangements submitted remain the sole responsibility of the
+            uploader.
           </p>
-          <p className="flex gap-2">
-            <Banknote className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
-            <span>
-              <strong className="text-ink">Payment.</strong> The baseline fee is{" "}
-              {BASE_PRICE_NPR} NPR, payable in cash to the Operations Lead once
-              your application is approved. Custom, rare, or complex memes are
-              subject to manual price estimation by the team before publishing.
-            </span>
+          <p className="mb-2">
+            Indemnification: You represent that your submissions do not infringe on
+            proprietary software, private personal property, or trademarked
+            material outside fair-use internet humor. You agree to fully indemnify,
+            defend, and hold harmless Meme Monks and its operators against any
+            copyright claims, legal fees, or third-party liabilities arising from
+            your content.
           </p>
-          <p className="flex gap-2">
-            <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
-            <span>
-              <strong className="text-ink">Publishing rights.</strong> By
-              submitting, you confirm you hold the rights to the work and grant
-              Meme Monks the right to publish it in the feed with credit.
-            </span>
+          <p className="mb-2">
+            License to Feature: By submitting a meme, you grant Meme Monks a
+            non-exclusive, royalty-free, worldwide license to host, display,
+            reformat, and feature your submission across the Platform.
+          </p>
+          <p className="mb-1 font-medium text-ink">Application &amp; Evaluation Fees:</p>
+          <p className="mb-2">
+            Conditional Vetting Fee: Standard meme applications do not carry a
+            mandatory fee. Meme Monks reserves the sole right to assess a nominal
+            evaluation or curation fee (e.g., NPR 50.00 or an amount determined
+            by the Platform) for special, high-tier, complex, or custom-category
+            meme submissions.
+          </p>
+          <p className="mb-2">
+            Email Notification &amp; Invoicing: If an application is designated for a
+            special evaluation fee, payment instructions and invoice details will
+            be sent directly to the applicant&apos;s provided email or Instagram.
+          </p>
+          <p className="mb-2">
+            Non-Refundable Processing: Paid evaluation fees cover the
+            administrative review of special applications and are strictly
+            non-refundable. Payment of a fee does not guarantee approval or
+            permanent placement on the main feed.
+          </p>
+          <p className="mb-1 font-medium text-ink">Content Moderation &amp; Account Right of Removal:</p>
+          <p className="mb-2">
+            Zero Tolerance: You may not submit hate speech, illegal content,
+            harassment, malware, or malicious scripts.
+          </p>
+          <p className="mb-2">
+            Discretionary Removal: Meme Monks reserves the absolute right to
+            reject, remove, or unpublish any meme, or suspend uploader privileges
+            at any time without prior notice.
+          </p>
+          <p className="mb-1 font-medium text-ink">Limitation of Liability:</p>
+          <p className="mb-2">
+            &quot;As-Is&quot; Service: The Platform is provided on an &quot;AS IS&quot; basis.
+            Meme Monks is not liable for data loss, server downtime, or user
+            interactions.
           </p>
         </div>
       </div>
@@ -123,7 +149,7 @@ function PolicyModal({ onClose }: { onClose: () => void }) {
 
 export default function ApplyPage() {
   const [name, setName] = useState("");
-  const [portfolio, setPortfolio] = useState("");
+  const [contact, setContact] = useState("");
   const [submissionType, setSubmissionType] = useState<SubmissionType>("UPLOAD");
   const [file, setFile] = useState<File | null>(null);
   const [conceptText, setConceptText] = useState("");
@@ -152,8 +178,8 @@ export default function ApplyPage() {
       setError("Creator name must be at least 2 characters.");
       return;
     }
-    if (!isValidUrl(portfolio)) {
-      setError("Portfolio link must be a valid http(s) URL.");
+    if (!isValidContact(contact.trim())) {
+      setError("Enter a valid email address or Instagram username.");
       return;
     }
     if (submissionType === "CONCEPT_DESCRIPTION" && sanitizeText(conceptText).length < 10) {
@@ -181,7 +207,7 @@ export default function ApplyPage() {
       if (submissionType === "UPLOAD") {
         const body = new FormData();
         body.set("name", cleanName);
-        body.set("portfolio", portfolio.trim());
+        body.set("contact", contact.trim());
         body.set("submissionType", "UPLOAD");
         body.set("agreedToPolicy", "true");
         body.set("file", file as File);
@@ -192,7 +218,7 @@ export default function ApplyPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: cleanName,
-            portfolio: portfolio.trim(),
+            contact: contact.trim(),
             submissionType: "CONCEPT_DESCRIPTION",
             conceptText: sanitizeText(conceptText, MAX_CONCEPT_LEN),
             agreedToPolicy: true,
@@ -224,8 +250,7 @@ export default function ApplyPage() {
           </h1>
           <p className="mx-auto mt-1 max-w-sm text-sm text-muted">
             The curators will review your submission. You&apos;ll hear back
-            after review — bring {BASE_PRICE_NPR} NPR in cash for the Operations
-            Lead if approved, or the estimated price for custom work.
+            after review. You will be contacted using the email or Instagram handle you provided.
           </p>
           <p className="mt-3 text-xs text-faint">
             Reference: <span className="tabular-nums text-muted">{refId}</span>
@@ -250,8 +275,8 @@ export default function ApplyPage() {
           Apply to upload
         </h1>
         <p className="mt-0.5 text-sm text-muted">
-          Posting rights are reviewed, not automatic. Baseline fee is{" "}
-          {BASE_PRICE_NPR} NPR — see the pricing terms below.
+          Posting rights are reviewed, not automatic. Please read and accept the
+          Terms and Conditions before submitting.
         </p>
       </div>
 
@@ -273,19 +298,22 @@ export default function ApplyPage() {
         </div>
 
         <div>
-          <label htmlFor="portfolio" className={labelClass}>
-            Portfolio or social link
+          <label htmlFor="contact" className={labelClass}>
+            Email or Instagram username
           </label>
           <input
-            id="portfolio"
-            type="url"
-            value={portfolio}
-            onChange={(e) => setPortfolio(e.target.value)}
-            placeholder="https://yourwork.example"
-            maxLength={500}
+            id="contact"
+            type="text"
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
+            placeholder="you@example.com or @yourhandle"
+            maxLength={120}
             required
             className={inputClass}
           />
+          <p className="mt-1 text-[11px] text-faint">
+            Used to contact you about your application.
+          </p>
         </div>
 
         {/* Submission type — flat segmented toggle */}
@@ -383,24 +411,7 @@ export default function ApplyPage() {
           </div>
         )}
 
-        {/* Pricing disclosure — flat container */}
-        <div className="rounded-md border border-line bg-inset p-3">
-          <p className="flex items-center gap-1.5 text-sm font-medium text-ink">
-            <Banknote className="h-3.5 w-3.5 text-muted" />
-            Pricing — {BASE_PRICE_NPR} NPR baseline
-          </p>
-          <p className="mt-1 text-xs leading-relaxed text-muted">
-            The standard baseline fee is{" "}
-            <span className="text-ink">{BASE_PRICE_NPR} NPR</span>, payable in{" "}
-            <span className="text-ink">cash to the Operations Lead</span> upon
-            approval. Custom, rare, or complex memes are subject to{" "}
-            <span className="text-ink">manual price estimation</span> by the
-            team — you&apos;ll be told the final price before anything is
-            charged or published.
-          </p>
-        </div>
-
-        {/* Policy agreement — gates submission */}
+        {/* Terms & Conditions agreement — gates submission */}
         <div className="rounded-md border border-line bg-surface p-3">
           <button
             type="button"
@@ -408,7 +419,7 @@ export default function ApplyPage() {
             className="flex items-center gap-1.5 text-xs font-medium text-accent transition-colors hover:text-accent-hover"
           >
             <ScrollText className="h-3.5 w-3.5" />
-            Read the Content Policy &amp; Pricing Terms
+            Read the Terms and Conditions
           </button>
           <label className="mt-2 flex cursor-pointer items-start gap-2 text-xs leading-relaxed text-muted">
             <input
@@ -419,8 +430,7 @@ export default function ApplyPage() {
               className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-[#647b96]"
             />
             <span>
-              I have read and agree to the Meme Monks Content Policy &amp;
-              Pricing Terms.
+              I have read and agree to the Meme Monks Terms and Conditions.
             </span>
           </label>
         </div>

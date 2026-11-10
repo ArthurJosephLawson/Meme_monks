@@ -8,11 +8,8 @@ import { sanitizeText, sanitizeUrl } from "./sanitize.ts";
 export const SUBMISSION_TYPES = ["UPLOAD", "CONCEPT_DESCRIPTION"] as const;
 export type SubmissionType = (typeof SUBMISSION_TYPES)[number];
 
-/** Baseline filing fee in NPR. Custom/rare/complex work is re-estimated by the team. */
-export const BASE_PRICE_NPR = 20;
-
 export const MAX_NAME_LEN = 80;
-export const MAX_PORTFOLIO_LEN = 500;
+export const MAX_CONTACT_LEN = 120;
 export const MAX_CONCEPT_LEN = 2000;
 
 /** Hard cap for uploaded meme assets: 5 MB. */
@@ -28,17 +25,30 @@ export const ALLOWED_IMAGE_TYPES: Record<string, string> = {
 
 export interface ValidatedApplication {
   name: string;
-  portfolio: string;
+  /** Email address or Instagram handle supplied by the applicant. */
+  contact: string;
   submissionType: SubmissionType;
   /** Set for UPLOAD: stored asset filename inside .data/uploads. */
   assetPath?: string;
   /** Set for CONCEPT_DESCRIPTION: sanitized concept text. */
   conceptText?: string;
-  basePriceNpr: number;
   agreedToPolicy: true;
 }
 
 export type ValidationFailure = { field: string; message: string };
+
+/**
+ * Accept either an email address or an Instagram-style handle.
+ */
+export function isValidContact(value: string): boolean {
+  const v = value.trim();
+  if (!v) return false;
+  // Email
+  if (v.includes("@") && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return true;
+  // Instagram handle (with or without leading @)
+  const handle = v.startsWith("@") ? v.slice(1) : v;
+  return /^[a-zA-Z0-9._]{1,30}$/.test(handle);
+}
 
 export interface UploadMeta {
   size: number;
@@ -55,7 +65,7 @@ export interface UploadMeta {
 export function validateApplication(
   input: {
     name?: unknown;
-    portfolio?: unknown;
+    contact?: unknown;
     submissionType?: unknown;
     conceptText?: unknown;
     agreedToPolicy?: unknown;
@@ -69,9 +79,11 @@ export function validateApplication(
     failures.push({ field: "name", message: "Creator name must be at least 2 characters." });
   }
 
-  const portfolio = sanitizeUrl(input.portfolio, MAX_PORTFOLIO_LEN);
-  if (!portfolio) {
-    failures.push({ field: "portfolio", message: "Portfolio link must be a valid http(s) URL." });
+  const contact = sanitizeText(input.contact, MAX_CONTACT_LEN);
+  if (!contact) {
+    failures.push({ field: "contact", message: "Email or Instagram username is required." });
+  } else if (!isValidContact(contact)) {
+    failures.push({ field: "contact", message: "Enter a valid email address or Instagram username." });
   }
 
   const submissionType = input.submissionType;
@@ -107,11 +119,9 @@ export function validateApplication(
     ok: true,
     value: {
       name,
-      portfolio: portfolio as string,
+      contact,
       submissionType: submissionType as SubmissionType,
       conceptText,
-      // Price is server-owned: baseline at filing, manual estimation later.
-      basePriceNpr: BASE_PRICE_NPR,
       agreedToPolicy: true,
     },
   };

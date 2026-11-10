@@ -4,13 +4,13 @@ import {
   validateApplication,
   validateUploadMeta,
   sniffImageType,
-  BASE_PRICE_NPR,
+  isValidContact,
   MAX_UPLOAD_BYTES,
 } from "../lib/application.ts";
 
 const VALID = {
   name: "Juniper Vale",
-  portfolio: "https://example.com/work",
+  contact: "juniper@example.com",
   submissionType: "CONCEPT_DESCRIPTION",
   conceptText: "A monk Photoshop-battling a deep-fried JPEG.",
   agreedToPolicy: true,
@@ -21,14 +21,14 @@ describe("validateApplication", () => {
     const r = validateApplication(VALID);
     assert.equal(r.ok, true);
     if (r.ok) {
-      assert.equal(r.value.basePriceNpr, BASE_PRICE_NPR);
+      assert.equal(r.value.contact, "juniper@example.com");
       assert.equal(r.value.agreedToPolicy, true);
       assert.equal(r.value.submissionType, "CONCEPT_DESCRIPTION");
     }
   });
 
   it("accepts a valid upload application without concept text", () => {
-    const r = validateApplication({ ...VALID, submissionType: "UPLOAD" }, { size: 1000, type: "image/png", name: "meme.png" });
+    const r = validateApplication({ ...VALID, submissionType: "UPLOAD", contact: "juniper@example.com" }, { size: 1000, type: "image/png", name: "meme.png" });
     assert.equal(r.ok, true);
   });
 
@@ -54,14 +54,16 @@ describe("validateApplication", () => {
     assert.equal(r.ok, false);
   });
 
-  it("rejects non-http(s) or malformed portfolio links", () => {
-    const r = validateApplication({ ...VALID, portfolio: "javascript:alert(1)" });
+  it("rejects invalid contact", () => {
+    const r = validateApplication({ ...VALID, contact: "" });
     assert.equal(r.ok, false);
+    const r2 = validateApplication({ ...VALID, contact: "not an email or handle!!!" });
+    assert.equal(r2.ok, false);
   });
 
-  it("always assigns the server-owned baseline price", () => {
-    const r = validateApplication(VALID);
-    if (r.ok) assert.equal(r.value.basePriceNpr, 20);
+  it("accepts instagram handle as contact", () => {
+    const r = validateApplication({ ...VALID, contact: "@juniper_vale" });
+    assert.equal(r.ok, true);
   });
 });
 

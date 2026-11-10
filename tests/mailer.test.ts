@@ -7,10 +7,9 @@ describe("buildApplicationEmail", () => {
     const email = buildApplicationEmail({
       id: "ref-1",
       name: "Juniper Vale",
-      portfolio: "https://example.com",
+      contact: "juniper@example.com",
       submissionType: "CONCEPT_DESCRIPTION",
       conceptText: "A monk defusing an exploding meme.",
-      basePriceNpr: 20,
       agreedToPolicy: true,
       status: "pending",
       createdAt: "2026-11-10T10:00:00.000Z",
@@ -18,17 +17,16 @@ describe("buildApplicationEmail", () => {
     assert.ok(email.subject.includes("Juniper Vale"));
     assert.ok(email.text.includes("Juniper Vale"));
     assert.ok(email.text.includes("A monk defusing an exploding meme."));
-    assert.ok(email.text.includes("20 NPR"));
+    assert.ok(email.text.includes("juniper@example.com"));
   });
 
   it("references uploaded meme asset for UPLOAD submissions", () => {
     const email = buildApplicationEmail({
       id: "ref-2",
       name: "Bad Actor",
-      portfolio: "https://evil.com",
+      contact: "evil@example.com",
       submissionType: "UPLOAD",
       assetPath: "40271395-4035-4874-a805-7410597ad08b.png",
-      basePriceNpr: 20,
       agreedToPolicy: true,
       status: "pending",
       createdAt: "2026-11-10T10:00:00.000Z",
@@ -40,10 +38,9 @@ describe("buildApplicationEmail", () => {
     const email = buildApplicationEmail({
       id: "ref-3",
       name: "Someone",
-      portfolio: "https://example.com",
+      contact: "someone@example.com",
       submissionType: "CONCEPT_DESCRIPTION",
       conceptText: "desc",
-      basePriceNpr: 20,
       agreedToPolicy: true,
       status: "pending",
       createdAt: "2026-11-10T10:00:00.000Z",
