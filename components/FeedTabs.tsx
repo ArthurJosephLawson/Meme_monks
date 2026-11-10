@@ -26,10 +26,10 @@ export function FeedTabs({
             role="tab"
             aria-selected={active}
             onClick={() => onChange(id)}
-            className={`rounded-[5px] px-4 py-1.5 text-sm transition-colors ${
+            className={`rounded-[5px] px-4 py-1.5 text-sm ${
               active
                 ? "border border-line bg-surface font-medium text-ink"
-                : "border border-transparent text-muted hover:text-ink"
+                : "border border-transparent text-muted "
             }`}
           >
             {label}

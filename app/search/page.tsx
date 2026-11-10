@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Search as SearchIcon, X } from "lucide-react";
+// No lucide-react icons.
 import { MemeCard } from "@/components/MemeCard";
 import { EmptyState } from "@/components/EmptyState";
 import { useMemes } from "@/lib/use-memes";
@@ -50,7 +50,6 @@ export default function SearchPage() {
       </div>
 
       <div className="relative">
-        <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-soft" />
         <input
           ref={inputRef}
           type="text"
@@ -58,15 +57,15 @@ export default function SearchPage() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search the archive…"
           aria-label="Search memes"
-          className="h-9 w-full rounded-md border border-line bg-surface pl-8 pr-8 text-sm text-ink placeholder:text-soft outline-none transition-colors focus:border-line-strong"
+          className="h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-soft outline-none focus:border-line-strong"
         />
         {query && (
           <button
             onClick={() => setQuery("")}
             aria-label="Clear search"
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-0.5 text-faint transition-colors hover:text-ink"
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-0.5 text-faint"
           >
-            <X className="h-3.5 w-3.5" />
+            ×
           </button>
         )}
       </div>

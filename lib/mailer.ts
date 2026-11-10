@@ -27,7 +27,7 @@ export interface ApplicationEmail {
  * for CONCEPT_DESCRIPTION the sanitized concept text is included.
  */
 export function buildApplicationEmail(data: ApplicationEmailData): ApplicationEmail {
-  const subject = `Meme Monks — new application filed: ${data.name}`;
+  const subject = `Meme Monks - new application filed: ${data.name}`;
 
   const detail =
     data.submissionType === "UPLOAD"
@@ -44,7 +44,7 @@ export function buildApplicationEmail(data: ApplicationEmailData): ApplicationEm
     "",
     `Reference:        ${data.id}`,
     `Applicant name:   ${data.name}`,
-    `Contact:          ${data.contact || "—"}`,
+    `Contact:          ${data.contact || "-"}`,
     `Submission type: ${data.submissionType}`,
     `Meme detail:      ${detail}`,
     `Policy agreed:    ${data.agreedToPolicy ? "yes" : "no"}`,
@@ -58,11 +58,11 @@ export function buildApplicationEmail(data: ApplicationEmailData): ApplicationEm
 <html>
   <body style="margin:0;padding:24px;background:#f1f3f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
     <div style="max-width:560px;margin:0 auto;background:#fbfcfe;border:1px solid #c5ccd8;border-radius:8px;padding:24px;">
-      <h1 style="margin:0 0 16px;font-size:16px;font-weight:600;color:#1f2833;">Meme Monks — new creator application</h1>
+      <h1 style="margin:0 0 16px;font-size:16px;font-weight:600;color:#1f2833;">Meme Monks - new creator application</h1>
       <table style="width:100%;border-collapse:collapse;font-size:13px;color:#1f2833;">
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Reference</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.id}</td></tr>
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Applicant name</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.name}</td></tr>
-        <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Contact</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.contact || "—"}</td></tr>
+        <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Contact</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.contact || "-"}</td></tr>
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Submission type</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.submissionType}</td></tr>
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Meme detail</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${detail}</td></tr>
         <tr><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">Policy agreed</td><td style="padding:6px 0;border-bottom:1px solid #e9edf3;">${data.agreedToPolicy ? "yes" : "no"}</td></tr>
@@ -80,7 +80,7 @@ export function buildApplicationEmail(data: ApplicationEmailData): ApplicationEm
 /**
  * Send the detailed application notification to the operations inbox.
  * Gmail SMTP via nodemailer. Failures are surfaced to the caller (the API
- * route logs them) — filing itself must not be rolled back on mail errors.
+ * route logs them) - filing itself must not be rolled back on mail errors.
  */
 export async function sendApplicationEmail(data: ApplicationEmailData): Promise<void> {
   const from = process.env.GMAIL_USER ?? OPERATIONS_EMAIL;

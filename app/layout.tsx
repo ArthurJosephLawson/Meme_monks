@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
 import { MobileBar, Sidebar } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Meme Monks — Curated memes from the collective",
+  title: "Meme Monks - Curated memes from the collective",
   description:
     "An exclusive, community-driven meme platform. Curated internet humor from creators in good standing.",
 };
@@ -38,6 +39,7 @@ export default async function RootLayout({
         <Sidebar />
         <MobileBar />
         <main className="min-h-screen pt-12 md:pl-56 md:pt-0">{children}</main>
+        <div className="md:pl-56"><Footer /></div>
       </body>
     </html>
   );

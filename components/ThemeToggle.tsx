@@ -1,10 +1,8 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
-
 /**
  * Toggles the `dark` class on <html> and persists the choice.
- * Icons are switched purely via the `dark:` variant, so server and
+ * Label is switched purely via the `dark:` variant, so server and
  * client render identically — no hydration mismatch, no icon flash.
  */
 export function ThemeToggle({ className = "" }: { className?: string }) {
@@ -25,10 +23,10 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       onClick={toggle}
       aria-label="Toggle light and dark theme"
       title="Toggle theme"
-      className={`flex h-8 w-8 items-center justify-center rounded-md text-muted transition-colors hover:bg-inset hover:text-ink ${className}`}
+      className={`flex h-8 items-center justify-center rounded-md px-2 text-xs text-muted ${className}`}
     >
-      <Sun className="h-4 w-4 dark:hidden" strokeWidth={2} />
-      <Moon className="hidden h-4 w-4 dark:block" strokeWidth={2} />
+      <span className="dark:hidden">Dark</span>
+      <span className="hidden dark:inline">Light</span>
     </button>
   );
 }

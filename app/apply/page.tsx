@@ -2,17 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import {
-  AlertTriangle,
-  ArrowLeft,
-  Check,
-  FileText,
-  FileUp,
-  Lightbulb,
-  Loader2,
-  ScrollText,
-  X,
-} from "lucide-react";
+// No lucide-react icons.
 import { sanitizeText } from "@/lib/sanitize";
 import { MAX_CONCEPT_LEN, MAX_UPLOAD_BYTES, isValidContact } from "@/lib/application";
 
@@ -26,7 +16,7 @@ const ALLOWED_FILE_TYPES: Record<string, string> = {
 };
 
 const inputClass =
-  "h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-soft outline-none transition-colors focus:border-line-strong";
+  "h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-soft outline-none focus:border-line-strong";
 const labelClass = "mb-1 block text-xs font-medium text-muted";
 
 function formatBytes(n: number): string {
@@ -64,7 +54,6 @@ function PolicyModal({ onClose }: { onClose: () => void }) {
             id="policy-title"
             className="flex items-center gap-2 text-sm font-semibold tracking-tight text-ink"
           >
-            <ScrollText className="h-4 w-4 text-muted" />
             Terms and Conditions
           </h2>
           <button
@@ -72,9 +61,9 @@ function PolicyModal({ onClose }: { onClose: () => void }) {
             type="button"
             onClick={onClose}
             aria-label="Close policy"
-            className="flex h-7 w-7 items-center justify-center rounded-md text-muted transition-colors hover:bg-inset hover:text-ink"
+            className="flex h-7 w-7 items-center justify-center rounded-md text-muted "
           >
-            <X className="h-4 w-4" />
+            ×
           </button>
         </div>
 
@@ -242,8 +231,8 @@ export default function ApplyPage() {
     return (
       <div className="mx-auto max-w-xl px-4 py-10 md:px-6">
         <div className="rounded-md border border-line bg-surface px-4 py-8 text-center">
-          <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-inset-strong text-ink">
-            <Check className="h-5 w-5" strokeWidth={2} />
+          <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-inset-strong text-sm font-semibold text-ink">
+            OK
           </span>
           <h1 className="mt-4 text-lg font-semibold tracking-tight text-ink">
             Application received
@@ -257,9 +246,9 @@ export default function ApplyPage() {
           </p>
           <Link
             href="/"
-            className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-colors hover:text-accent-hover"
+            className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-accent "
           >
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to feed
+            Back to feed
           </Link>
         </div>
       </div>
@@ -316,7 +305,7 @@ export default function ApplyPage() {
           </p>
         </div>
 
-        {/* Submission type — flat segmented toggle */}
+        {/* Submission type - flat segmented toggle */}
         <fieldset>
           <legend className={labelClass}>Submission type</legend>
           <div
@@ -326,15 +315,14 @@ export default function ApplyPage() {
           >
             {(
               [
-                { id: "UPLOAD", label: "Upload meme", icon: FileUp, hint: "You have the image ready" },
+                { id: "UPLOAD", label: "Upload meme", hint: "You have the image ready" },
                 {
                   id: "CONCEPT_DESCRIPTION",
                   label: "Describe concept",
-                  icon: Lightbulb,
                   hint: "Our team designs it",
                 },
               ] as const
-            ).map(({ id, label, icon: Icon, hint }) => {
+            ).map(({ id, label, hint }) => {
               const active = submissionType === id;
               return (
                 <button
@@ -343,16 +331,15 @@ export default function ApplyPage() {
                   role="radio"
                   aria-checked={active}
                   onClick={() => setSubmissionType(id)}
-                  className={`rounded-md border px-3 py-2.5 text-left transition-colors ${
+                  className={`rounded-md border px-3 py-2.5 text-left ${
                     active
                       ? "border-line-strong bg-inset-strong"
-                      : "border-line bg-surface hover:bg-inset"
+                      : "border-line bg-surface "
                   }`}
                 >
                   <span
-                    className={`flex items-center gap-1.5 text-sm font-medium ${active ? "text-ink" : "text-muted"}`}
+                    className={`text-sm font-medium ${active ? "text-ink" : "text-muted"}`}
                   >
-                    <Icon className="h-4 w-4" strokeWidth={2} />
                     {label}
                   </span>
                   <span className="mt-0.5 block text-[11px] text-faint">{hint}</span>
@@ -365,7 +352,7 @@ export default function ApplyPage() {
         {submissionType === "UPLOAD" ? (
           <div>
             <label htmlFor="file" className={labelClass}>
-              Meme image — PNG, JPEG, GIF, or WebP, max {formatBytes(MAX_UPLOAD_BYTES)}
+              Meme image - PNG, JPEG, GIF, or WebP, max {formatBytes(MAX_UPLOAD_BYTES)}
             </label>
             <input
               ref={fileInputRef}
@@ -376,15 +363,13 @@ export default function ApplyPage() {
               className="block w-full cursor-pointer rounded-md border border-line bg-surface text-xs text-muted file:mr-3 file:cursor-pointer file:rounded-l-md file:border-0 file:border-r file:border-line file:bg-inset file:px-3 file:py-2 file:text-xs file:font-medium file:text-ink"
             />
             {file && (
-              <p className="mt-1 flex items-center gap-1.5 text-[11px] text-faint">
-                <FileText className="h-3 w-3" />
-                <span className="truncate text-muted">{file.name}</span> —{" "}
+              <p className="mt-1 text-[11px] text-faint">
+                <span className="truncate text-muted">{file.name}</span> -{" "}
                 {formatBytes(file.size)}
               </p>
             )}
             {(fileTooBig || fileBadType) && (
-              <p className="mt-1 flex items-center gap-1 text-[11px] text-red-700">
-                <AlertTriangle className="h-3 w-3" />
+              <p className="mt-1 text-[11px] text-red-700">
                 {fileTooBig
                   ? "File exceeds the 5 MB limit."
                   : "Only PNG, JPEG, GIF, or WebP images are accepted."}
@@ -394,7 +379,7 @@ export default function ApplyPage() {
         ) : (
           <div>
             <label htmlFor="concept" className={labelClass}>
-              Meme concept — our team designs it for you
+              Meme concept - our team designs it for you
             </label>
             <textarea
               id="concept"
@@ -403,7 +388,7 @@ export default function ApplyPage() {
               placeholder="Describe the idea: format, caption, reference…"
               maxLength={MAX_CONCEPT_LEN}
               rows={4}
-              className="w-full resize-y rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-soft outline-none transition-colors focus:border-line-strong"
+              className="w-full resize-y rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-soft outline-none focus:border-line-strong"
             />
             <p className="mt-1 text-right text-[11px] text-faint">
               {conceptText.length}/{MAX_CONCEPT_LEN}
@@ -411,14 +396,13 @@ export default function ApplyPage() {
           </div>
         )}
 
-        {/* Terms & Conditions agreement — gates submission */}
+        {/* Terms & Conditions agreement - gates submission */}
         <div className="rounded-md border border-line bg-surface p-3">
           <button
             type="button"
             onClick={() => setPolicyOpen(true)}
-            className="flex items-center gap-1.5 text-xs font-medium text-accent transition-colors hover:text-accent-hover"
+            className="flex items-center gap-1.5 text-xs font-medium text-accent "
           >
-            <ScrollText className="h-3.5 w-3.5" />
             Read the Terms and Conditions
           </button>
           <label className="mt-2 flex cursor-pointer items-start gap-2 text-xs leading-relaxed text-muted">
@@ -447,15 +431,9 @@ export default function ApplyPage() {
         <button
           type="submit"
           disabled={!canSubmit}
-          className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-accent text-sm font-medium text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-accent text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {submitting ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" /> Submitting…
-            </>
-          ) : (
-            "Submit application"
-          )}
+          {submitting ? "Submitting…" : "Submit application"}
         </button>
       </form>
     </div>

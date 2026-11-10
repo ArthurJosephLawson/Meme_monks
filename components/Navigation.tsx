@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Search, Trophy, Gamepad2, ArrowUpRight } from "lucide-react";
+// Icons are intentionally omitted (no lucide-react dependency).
 import { ThemeToggle } from "./ThemeToggle";
 
 const NAV = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/search", label: "Search", icon: Search },
-  { href: "/leaderboard", label: "Top Monks", icon: Trophy },
-  { href: "/games", label: "Games", icon: Gamepad2 },
+  { href: "/", label: "Home" },
+  { href: "/search", label: "Search" },
+  { href: "/leaderboard", label: "Top Monks" },
+  { href: "/games", label: "Games" },
 ];
 
 function isActive(pathname: string, href: string): boolean {
@@ -43,20 +43,19 @@ export function Sidebar() {
       </div>
 
       <nav className="flex-1 space-y-0.5 px-2 py-2">
-        {NAV.map(({ href, label, icon: Icon }) => {
+        {NAV.map(({ href, label }) => {
           const active = isActive(pathname, href);
           return (
             <Link
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
-              className={`flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors ${
+              className={`flex items-center gap-2.5 rounded-md px-3 py-2 text-sm ${
                 active
                   ? "bg-inset-strong font-medium text-ink"
-                  : "text-muted hover:bg-inset hover:text-ink"
+                  : "text-muted"
               }`}
             >
-              <Icon className="h-4 w-4" strokeWidth={2} />
               {label}
             </Link>
           );
@@ -66,10 +65,9 @@ export function Sidebar() {
       <div className="border-t border-line p-2">
         <Link
           href="/apply"
-          className="flex items-center justify-center gap-1.5 rounded-md bg-accent px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
+          className="flex items-center justify-center gap-1.5 rounded-md bg-accent px-3 py-2 text-sm font-medium text-white "
         >
           Apply to upload
-          <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
         </Link>
       </div>
     </aside>
@@ -96,7 +94,7 @@ export function MobileBar() {
 
       <nav className="ml-auto flex items-center gap-1">
         <ThemeToggle className="mr-0.5" />
-        {NAV.map(({ href, label, icon: Icon }) => {
+        {NAV.map(({ href, label }) => {
           const active = isActive(pathname, href);
           return (
             <Link
@@ -104,19 +102,19 @@ export function MobileBar() {
               href={href}
               aria-label={label}
               aria-current={active ? "page" : undefined}
-              className={`flex h-8 w-8 items-center justify-center rounded-md transition-colors ${
+              className={`flex h-8 w-8 items-center justify-center rounded-md text-xs font-medium ${
                 active
                   ? "bg-inset-strong text-ink"
-                  : "text-muted hover:bg-inset hover:text-ink"
+                  : "text-muted"
               }`}
             >
-              <Icon className="h-4 w-4" strokeWidth={2} />
+              {label.charAt(0)}
             </Link>
           );
         })}
         <Link
           href="/apply"
-          className="ml-1 flex h-8 items-center rounded-md bg-accent px-3 text-xs font-medium text-white transition-colors hover:bg-accent-hover"
+          className="ml-1 flex h-8 items-center rounded-md bg-accent px-3 text-xs font-medium text-white"
         >
           Apply
         </Link>

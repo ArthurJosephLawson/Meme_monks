@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Zap, Flame, Share2, Check, MessageCircle, Send } from "lucide-react";
 import type { Meme, Comment } from "@/lib/types";
 import { creatorByHandle } from "@/lib/data";
 import { timeAgo, formatCount } from "@/lib/format";
@@ -122,13 +121,12 @@ export function MemeCard({ meme }: { meme: Meme }) {
           <button
             onClick={() => react("based")}
             aria-pressed={votes.based}
-            className={`flex items-center gap-1.5 rounded px-2 py-1 text-xs transition-colors ${
+            className={`flex items-center gap-1.5 rounded px-2 py-1 text-xs ${
               votes.based
                 ? "bg-inset-strong font-medium text-ink"
-                : "text-muted hover:bg-inset hover:text-ink"
+                : "text-muted "
             }`}
           >
-            <Zap className="h-3.5 w-3.5" strokeWidth={2} />
             Based
             <span className="tabular-nums text-faint">{formatCount(basedCount)}</span>
           </button>
@@ -136,13 +134,12 @@ export function MemeCard({ meme }: { meme: Meme }) {
           <button
             onClick={() => react("laugh")}
             aria-pressed={votes.laugh}
-            className={`flex items-center gap-1.5 rounded px-2 py-1 text-xs transition-colors ${
+            className={`flex items-center gap-1.5 rounded px-2 py-1 text-xs ${
               votes.laugh
                 ? "bg-inset-strong font-medium text-ink"
-                : "text-muted hover:bg-inset hover:text-ink"
+                : "text-muted "
             }`}
           >
-            <Flame className="h-3.5 w-3.5" strokeWidth={2} />
             Laugh
             <span className="tabular-nums text-faint">{formatCount(laughCount)}</span>
           </button>
@@ -150,15 +147,10 @@ export function MemeCard({ meme }: { meme: Meme }) {
           <button
             onClick={share}
             aria-label="Share meme"
-            className={`ml-auto flex items-center gap-1.5 rounded px-2 py-1 text-xs transition-colors ${
-              copied ? "font-medium text-ink" : "text-muted hover:bg-inset hover:text-ink"
+            className={`ml-auto flex items-center gap-1.5 rounded px-2 py-1 text-xs ${
+              copied ? "font-medium text-ink" : "text-muted "
             }`}
           >
-            {copied ? (
-              <Check className="h-3.5 w-3.5" strokeWidth={2} />
-            ) : (
-              <Share2 className="h-3.5 w-3.5" strokeWidth={2} />
-            )}
             {copied ? "Copied" : "Share"}
           </button>
         </div>
@@ -169,9 +161,8 @@ export function MemeCard({ meme }: { meme: Meme }) {
           <button
             type="button"
             onClick={toggleComments}
-            className="flex items-center gap-1.5 text-xs font-medium text-muted transition-colors hover:text-ink"
+            className="flex items-center gap-1.5 text-xs font-medium text-muted "
           >
-            <MessageCircle className="h-3.5 w-3.5" />
             {commentsOpen ? "Hide comments" : "Comments"}
             {comments.length > 0 && (
               <span className="tabular-nums text-faint">({comments.length})</span>
@@ -220,10 +211,9 @@ export function MemeCard({ meme }: { meme: Meme }) {
                 <button
                   type="submit"
                   disabled={posting || !commentText.trim() || !commentAuthor.trim()}
-                  aria-label="Post comment"
-                  className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-white transition-colors hover:bg-accent-hover disabled:opacity-50"
+                  className="rounded-md bg-accent px-2 py-1 text-xs font-medium text-white disabled:opacity-50"
                 >
-                  <Send className="h-3 w-3" />
+                  Post
                 </button>
               </form>
             </div>

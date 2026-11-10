@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { Trophy, Zap, Flame } from "lucide-react";
+// No lucide-react icons.
 import { formatCount } from "@/lib/format";
 import { EmptyState } from "@/components/EmptyState";
 import { useMemes } from "@/lib/use-memes";
@@ -52,7 +52,17 @@ export default function LeaderboardPage() {
       </div>
 
       {loading ? (
-        <p className="text-xs text-faint">Loading rankings…</p>
+        <div className="space-y-2" aria-busy="true" aria-label="Loading rankings">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="rounded-md border border-line bg-surface px-3 py-2.5">
+              <div className="flex items-center gap-3">
+                <div className="h-4 w-6 rounded bg-inset" />
+                <div className="h-4 w-32 rounded bg-inset" />
+              </div>
+              <div className="mt-2 h-1 rounded-full bg-inset" />
+            </div>
+          ))}
+        </div>
       ) : rows.length > 0 ? (
         <ol className="space-y-2">
           {rows.map((row, i) => {
@@ -83,10 +93,10 @@ export default function LeaderboardPage() {
 
                   <div className="shrink-0 text-right text-xs text-muted">
                     <p className="flex items-center justify-end gap-1 tabular-nums">
-                      <Zap className="h-3 w-3 text-soft" /> {formatCount(row.based)}
+                      {formatCount(row.based)} based
                     </p>
                     <p className="mt-0.5 flex items-center justify-end gap-1 tabular-nums text-faint">
-                      <Flame className="h-3 w-3 text-soft" /> {formatCount(row.laugh)}
+                      {formatCount(row.laugh)} laugh
                     </p>
                   </div>
                 </div>
@@ -109,7 +119,6 @@ export default function LeaderboardPage() {
 
       {rows.length > 0 && (
         <p className="mt-3 flex items-center gap-1.5 text-xs text-faint">
-          <Trophy className="h-3.5 w-3.5 text-soft" />
           Ranks refresh as reactions come in.
         </p>
       )}

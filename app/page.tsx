@@ -35,7 +35,21 @@ export default function FeedPage() {
       </div>
 
       {loading ? (
-        <p className="text-xs text-faint">Loading memes…</p>
+        <div className="space-y-4" aria-busy="true" aria-label="Loading memes">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="overflow-hidden rounded-md border border-line bg-surface">
+              <div className="flex items-center gap-2.5 px-3 py-3">
+                <div className="h-7 w-7 rounded-md bg-inset" />
+                <div className="h-3 w-24 rounded bg-inset" />
+              </div>
+              <div className="h-48 bg-inset" />
+              <div className="space-y-2 px-3 py-2.5">
+                <div className="h-3 w-3/4 rounded bg-inset" />
+                <div className="h-3 w-1/2 rounded bg-inset" />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : memes.length > 0 ? (
         <div className="space-y-4">
           {memes.map((meme) => (
@@ -45,7 +59,7 @@ export default function FeedPage() {
       ) : (
         <EmptyState
           title="No memes yet"
-          description="The first transmissions land here. Creator applications are open — apply and be first through the gate."
+          description="The first transmissions land here. Creator applications are open - apply and be first through the gate."
           actionLabel="Apply to upload"
           actionHref="/apply"
         />

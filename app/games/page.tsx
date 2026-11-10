@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Gamepad2, Zap, RotateCcw } from "lucide-react";
+// No lucide-react icons.
 import { EmptyState } from "@/components/EmptyState";
 
 // ---------- Reaction Time Game ----------
@@ -46,8 +46,8 @@ function ReactionGame() {
 
   return (
     <div className="rounded-md border border-line bg-surface p-4">
-      <h2 className="flex items-center gap-2 text-sm font-semibold tracking-tight text-ink">
-        <Zap className="h-4 w-4 text-muted" /> Reaction Time
+      <h2 className="text-sm font-semibold tracking-tight text-ink">
+        Reaction Time
       </h2>
       <p className="mt-0.5 text-xs text-muted">
         Wait for green, then click as fast as you can. Don&apos;t click early.
@@ -56,20 +56,20 @@ function ReactionGame() {
       <button
         type="button"
         onClick={state === "idle" || state === "result" || state === "tooSoon" ? start : click}
-        className={`mt-3 flex h-28 w-full items-center justify-center rounded-md text-sm font-medium transition-colors ${
+        className={`mt-3 flex h-28 w-full items-center justify-center rounded-md text-sm font-medium ${
           state === "ready"
             ? "bg-[#6b8e6b] text-white"
             : state === "waiting"
               ? "bg-[#b86b6b] text-white"
               : state === "tooSoon"
                 ? "bg-[#b86b6b] text-white"
-                : "bg-inset text-ink hover:bg-inset-strong"
+                : "bg-inset text-ink "
         }`}
       >
         {state === "idle" && "Click to start"}
         {state === "waiting" && "Wait for green…"}
         {state === "ready" && "CLICK NOW!"}
-        {state === "result" && `${resultMs} ms — click to retry`}
+        {state === "result" && `${resultMs} ms - click to retry`}
         {state === "tooSoon" && "Too soon! Click to retry"}
       </button>
 
@@ -80,14 +80,14 @@ function ReactionGame() {
       )}
 
       <div className="mt-2 flex items-center justify-between text-xs text-faint">
-        <span>Last: {resultMs !== null ? `${resultMs} ms` : "—"}</span>
-        <span>Best: {best !== null ? `${best} ms` : "—"}</span>
+        <span>Last: {resultMs !== null ? `${resultMs} ms` : "-"}</span>
+        <span>Best: {best !== null ? `${best} ms` : "-"}</span>
         <button
           type="button"
           onClick={reset}
-          className="flex items-center gap-1 text-muted transition-colors hover:text-ink"
+          className="flex items-center gap-1 text-muted "
         >
-          <RotateCcw className="h-3 w-3" /> Reset
+          Reset
         </button>
       </div>
     </div>
@@ -95,7 +95,7 @@ function ReactionGame() {
 }
 
 // ---------- Meme Memory Game ----------
-const EMOJIS = ["😂", "💀", "🔥", "😭", "😎", "🤔", "👀", "🤯"];
+const EMOJIS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
 function MemoryGame() {
   const [cards, setCards] = useState<{ id: number; emoji: string; flipped: boolean; matched: boolean }[]>([]);
@@ -154,7 +154,7 @@ function MemoryGame() {
   return (
     <div className="rounded-md border border-line bg-surface p-4">
       <h2 className="flex items-center gap-2 text-sm font-semibold tracking-tight text-ink">
-        <Gamepad2 className="h-4 w-4 text-muted" /> Meme Memory
+        Meme Memory
       </h2>
       <p className="mt-0.5 text-xs text-muted">
         Flip cards to find matching emoji pairs. Fewer moves = better.
@@ -166,12 +166,12 @@ function MemoryGame() {
             key={card.id}
             type="button"
             onClick={() => flip(idx)}
-            className={`flex h-14 items-center justify-center rounded-md border text-2xl transition-colors ${
+            className={`flex h-14 items-center justify-center rounded-md border text-2xl ${
               card.matched
                 ? "border-[#6b8e6b] bg-[#eaf2ea] text-ink"
                 : card.flipped
                   ? "border-line-strong bg-inset-strong text-ink"
-                  : "border-line bg-inset text-transparent hover:bg-inset-strong"
+                  : "border-line bg-inset text-transparent "
             }`}
             aria-label={card.flipped || card.matched ? card.emoji : "hidden card"}
           >
@@ -186,9 +186,9 @@ function MemoryGame() {
         <button
           type="button"
           onClick={newGame}
-          className="flex items-center gap-1 text-muted transition-colors hover:text-ink"
+          className="flex items-center gap-1 text-muted "
         >
-          <RotateCcw className="h-3 w-3" /> New game
+          New game
         </button>
       </div>
 
