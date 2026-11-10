@@ -14,10 +14,18 @@ flat colors only, no gradients.
 
 ```bash
 npm install
-./localhost.sh   # dev server on :3000 (falls back to the next free port)
-npm run build    # production build
-npm test         # unit tests
+./localhost.sh        # dev server on :3000 (falls back to the next free port)
+./dev_console.sh      # developer console (no npm/Node needed): publish a meme
+npm run build         # production build
+npm test              # unit tests
 ```
+
+### Publishing memes (dev)
+
+Drop image files into `public/memes/` and add an entry to `public/memes/manifest.json`
+(`{ file, title, creator, commentsEnabled }`) — they appear on the site automatically,
+including on Vercel (static assets). Or run `./dev_console.sh` against a running
+server to publish dynamically (local dev only; Vercel filesystem is ephemeral).
 
 ## Structure
 

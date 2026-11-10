@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Zap, Flame, Share2, Check } from "lucide-react";
-import type { Meme } from "@/lib/types";
+import { Zap, Flame, Share2, Check, MessageCircle, Send } from "lucide-react";
+import type { Meme, Comment } from "@/lib/types";
 import { creatorByHandle } from "@/lib/data";
 import { timeAgo, formatCount } from "@/lib/format";
 import { TagPill } from "./TagPill";
@@ -13,6 +13,53 @@ export function MemeCard({ meme }: { meme: Meme }) {
     laugh: false,
   });
   const [copied, setCopied] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [loadingComments, setLoadingComments] = useState(false);
+  const [commentAuthor, setCommentAuthor] = useState("");
+  const [commentText, setCommentText] = useState("");
+  const [posting, setPosting] = useState(false);
+
+  async function loadComments() {
+    setLoadingComments(true);
+    try {
+      const res = await fetch(`/api/comments?memeId=${encodeURIComponent(meme.id)}`, { cache: "no-store" });
+      const data = (await res.json()) as { ok?: boolean; comments?: Comment[] };
+      if (data?.ok) setComments(data.comments ?? []);
+    } catch {
+      // ignore
+    } finally {
+      setLoadingComments(false);
+    }
+  }
+
+  function toggleComments() {
+    const next = !commentsOpen;
+    setCommentsOpen(next);
+    if (next && comments.length === 0) loadComments();
+  }
+
+  async function postComment(e: React.FormEvent) {
+    e.preventDefault();
+    if (!commentText.trim() || !commentAuthor.trim()) return;
+    setPosting(true);
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ memeId: meme.id, author: commentAuthor.trim(), text: commentText.trim() }),
+      });
+      const data = (await res.json()) as { ok?: boolean; comment?: Comment; error?: string };
+      if (res.ok && data?.ok && data.comment) {
+        setComments((c) => [...c, data.comment as Comment]);
+        setCommentText("");
+      }
+    } catch {
+      // ignore
+    } finally {
+      setPosting(false);
+    }
+  }
 
   const creator = creatorByHandle(meme.creator);
 
@@ -116,6 +163,73 @@ export function MemeCard({ meme }: { meme: Meme }) {
           </button>
         </div>
       </div>
+
+      {meme.commentsEnabled && (
+        <div className="border-t border-line px-3 py-2.5">
+          <button
+            type="button"
+            onClick={toggleComments}
+            className="flex items-center gap-1.5 text-xs font-medium text-muted transition-colors hover:text-ink"
+          >
+            <MessageCircle className="h-3.5 w-3.5" />
+            {commentsOpen ? "Hide comments" : "Comments"}
+            {comments.length > 0 && (
+              <span className="tabular-nums text-faint">({comments.length})</span>
+            )}
+          </button>
+
+          {commentsOpen && (
+            <div className="mt-2 space-y-2">
+              {loadingComments ? (
+                <p className="text-xs text-faint">Loading comments…</p>
+              ) : comments.length === 0 ? (
+                <p className="text-xs text-faint">No comments yet.</p>
+              ) : (
+                <ul className="space-y-1.5">
+                  {comments.map((c) => (
+                    <li key={c.id} className="rounded-md bg-inset px-2.5 py-1.5">
+                      <p className="text-xs font-medium text-ink">
+                        {c.author}{" "}
+                        <span className="font-normal text-faint">
+                          · {timeAgo(c.createdAt)}
+                        </span>
+                      </p>
+                      <p className="mt-0.5 text-xs text-muted">{c.text}</p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <form onSubmit={postComment} className="mt-2 flex items-center gap-1.5">
+                <input
+                  type="text"
+                  value={commentAuthor}
+                  onChange={(e) => setCommentAuthor(e.target.value)}
+                  placeholder="Name"
+                  maxLength={40}
+                  className="h-7 w-24 rounded-md border border-line bg-surface px-2 text-xs text-ink placeholder:text-soft outline-none focus:border-line-strong"
+                />
+                <input
+                  type="text"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  placeholder="Add a comment…"
+                  maxLength={500}
+                  className="h-7 flex-1 rounded-md border border-line bg-surface px-2 text-xs text-ink placeholder:text-soft outline-none focus:border-line-strong"
+                />
+                <button
+                  type="submit"
+                  disabled={posting || !commentText.trim() || !commentAuthor.trim()}
+                  aria-label="Post comment"
+                  className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-white transition-colors hover:bg-accent-hover disabled:opacity-50"
+                >
+                  <Send className="h-3 w-3" />
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
+      )}
     </article>
   );
 }

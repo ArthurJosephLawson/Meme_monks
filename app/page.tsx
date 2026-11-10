@@ -1,16 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { MEMES } from "@/lib/data";
 import { MemeCard } from "@/components/MemeCard";
 import { FeedTabs, type FeedTab } from "@/components/FeedTabs";
 import { EmptyState } from "@/components/EmptyState";
+import { useMemes } from "@/lib/use-memes";
 
 export default function FeedPage() {
   const [tab, setTab] = useState<FeedTab>("foryou");
+  const { memes: source, loading } = useMemes();
 
   const memes = useMemo(() => {
-    const sorted = [...MEMES];
+    const sorted = [...source];
     if (tab === "foryou") {
       sorted.sort((a, b) => b.based + b.laugh - (a.based + a.laugh));
     } else {
@@ -19,7 +20,7 @@ export default function FeedPage() {
       );
     }
     return sorted;
-  }, [tab]);
+  }, [source, tab]);
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 md:px-6">
@@ -33,7 +34,9 @@ export default function FeedPage() {
         <FeedTabs tab={tab} onChange={setTab} />
       </div>
 
-      {memes.length > 0 ? (
+      {loading ? (
+        <p className="text-xs text-faint">Loading memes…</p>
+      ) : memes.length > 0 ? (
         <div className="space-y-4">
           {memes.map((meme) => (
             <MemeCard key={meme.id} meme={meme} />

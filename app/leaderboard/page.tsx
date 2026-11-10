@@ -1,7 +1,10 @@
+"use client";
+
+import { useMemo } from "react";
 import { Trophy, Zap, Flame } from "lucide-react";
-import { CREATORS, MEMES } from "@/lib/data";
 import { formatCount } from "@/lib/format";
 import { EmptyState } from "@/components/EmptyState";
+import { useMemes } from "@/lib/use-memes";
 
 interface MonkRow {
   handle: string;
@@ -11,21 +14,32 @@ interface MonkRow {
   laugh: number;
 }
 
-function computeLeaderboard(): MonkRow[] {
-  return CREATORS.map((c) => {
-    const posted = MEMES.filter((m) => m.creator === c.handle);
-    return {
-      handle: c.handle,
-      monkName: c.monkName,
-      memes: posted.length,
-      based: posted.reduce((s, m) => s + m.based, 0),
-      laugh: posted.reduce((s, m) => s + m.laugh, 0),
-    };
-  }).sort((a, b) => b.based + b.laugh - (a.based + a.laugh));
-}
-
 export default function LeaderboardPage() {
-  const rows = computeLeaderboard();
+  const { memes, loading } = useMemes();
+
+  const rows = useMemo<MonkRow[]>(() => {
+    const byCreator = new Map<string, MonkRow>();
+    for (const m of memes) {
+      const existing = byCreator.get(m.creator);
+      if (existing) {
+        existing.memes += 1;
+        existing.based += m.based;
+        existing.laugh += m.laugh;
+      } else {
+        byCreator.set(m.creator, {
+          handle: m.creator,
+          monkName: m.creator,
+          memes: 1,
+          based: m.based,
+          laugh: m.laugh,
+        });
+      }
+    }
+    return Array.from(byCreator.values()).sort(
+      (a, b) => b.based + b.laugh - (a.based + a.laugh),
+    );
+  }, [memes]);
+
   const max = Math.max(1, ...rows.map((r) => r.based + r.laugh));
 
   return (
@@ -37,7 +51,9 @@ export default function LeaderboardPage() {
         </p>
       </div>
 
-      {rows.length > 0 ? (
+      {loading ? (
+        <p className="text-xs text-faint">Loading rankings…</p>
+      ) : rows.length > 0 ? (
         <ol className="space-y-2">
           {rows.map((row, i) => {
             const rank = i + 1;

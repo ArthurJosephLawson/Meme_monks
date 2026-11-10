@@ -2,13 +2,14 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search as SearchIcon, X } from "lucide-react";
-import { MEMES } from "@/lib/data";
 import { MemeCard } from "@/components/MemeCard";
 import { EmptyState } from "@/components/EmptyState";
+import { useMemes } from "@/lib/use-memes";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const { memes: source } = useMemes();
 
   // "/" focuses the search input
   useEffect(() => {
@@ -25,13 +26,13 @@ export default function SearchPage() {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
-    return MEMES.filter(
+    return source.filter(
       (m) =>
         m.title.toLowerCase().includes(q) ||
         m.creator.toLowerCase().includes(q) ||
         m.tags.some((t) => t.toLowerCase().includes(q)),
     );
-  }, [query]);
+  }, [query, source]);
 
   const searching = query.trim().length > 0;
 

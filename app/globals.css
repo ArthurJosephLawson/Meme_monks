@@ -1,25 +1,26 @@
 @import "tailwindcss";
 
-@theme {
-  /* Backgrounds — light base scale */
-  --color-base: #f1f3f7;
-  --color-surface: #fbfcfe;
-  --color-inset: #e9edf3;
-  --color-inset-strong: #dfe4ed;
+/* Class-based dark mode (html.dark), driven by the inline init script in layout.tsx */
+@custom-variant dark (&:where(.dark, .dark *));
 
-  /* Lines — mid-tone container borders */
-  --color-line: #c5ccd8;
-  --color-line-strong: #adb8cb;
-
-  /* Text — deep slate on light */
-  --color-ink: #1f2833;
-  --color-muted: #647b96;
-  --color-faint: #7b90a8;
-  --color-soft: #94a3b8;
-
-  /* Interactive — slate blue accents */
-  --color-accent: #647b96;
-  --color-accent-hover: #546a84;
+/*
+ * Theme token names map to raw palette variables (`--mm-*`) declared at
+ * the bottom of this file: light values on :root, flat charcoal values
+ * on html.dark. Utilities resolve the active theme at the point of use.
+ */
+@theme inline {
+  --color-base: var(--mm-base);
+  --color-surface: var(--mm-surface);
+  --color-inset: var(--mm-inset);
+  --color-inset-strong: var(--mm-inset-strong);
+  --color-line: var(--mm-line);
+  --color-line-strong: var(--mm-line-strong);
+  --color-ink: var(--mm-ink);
+  --color-muted: var(--mm-muted);
+  --color-faint: var(--mm-faint);
+  --color-soft: var(--mm-soft);
+  --color-accent: var(--mm-accent);
+  --color-accent-hover: var(--mm-accent-hover);
 
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
@@ -28,12 +29,55 @@
 
 /* Flat, quiet selection */
 ::selection {
-  background: #dfe4ed;
-  color: #1f2833;
+  background: var(--mm-inset-strong);
+  color: var(--mm-ink);
 }
 
 /* Visible keyboard focus, flat outline */
 :focus-visible {
-  outline: 2px solid #647b96;
+  outline: 2px solid var(--mm-accent);
   outline-offset: 1px;
+}
+
+.dark :focus-visible {
+  outline-color: var(--mm-accent-hover);
+}
+
+/* Light palette */
+:root {
+  --mm-base: #f1f3f7;
+  --mm-surface: #fbfcfe;
+  --mm-inset: #e9edf3;
+  --mm-inset-strong: #dfe4ed;
+  --mm-line: #c5ccd8;
+  --mm-line-strong: #adb8cb;
+  --mm-ink: #1f2833;
+  --mm-muted: #647b96;
+  --mm-faint: #7b90a8;
+  --mm-soft: #94a3b8;
+  --mm-accent: #647b96;
+  --mm-accent-hover: #546a84;
+
+  color-scheme: light;
+}
+
+/*
+ * Dark palette — flat charcoal / deep slate. Solid hex values only:
+ * no gradients, no purple, no glow.
+ */
+.dark {
+  --mm-base: #10151c;
+  --mm-surface: #171e27;
+  --mm-inset: #1e2632;
+  --mm-inset-strong: #293445;
+  --mm-line: #303c4d;
+  --mm-line-strong: #425165;
+  --mm-ink: #e7edf4;
+  --mm-muted: #a3b4c7;
+  --mm-faint: #8296ab;
+  --mm-soft: #66798e;
+  --mm-accent: #647b96;
+  --mm-accent-hover: #74889f;
+
+  color-scheme: dark;
 }
